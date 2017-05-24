@@ -2,14 +2,19 @@
   "name": "dostawy2",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.15.3",
-    "javascript-lp-solver": "^0.4.5"
+    "angular": "^1.6.4",
+    "angular-animate": "^1.6.4",
+    "angular-aria": "^1.6.4",
+    "angular-material": "^1.1.4"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.18.12"
   }
 }

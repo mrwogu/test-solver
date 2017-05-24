@@ -1,6 +1,113 @@
-<html>
-<head><title></title></head>
-<body>
+<!DOCTYPE html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"><![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="pl"><!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <meta name="keywords" content=""/>
+    <meta name="description" content=""/>
+    <base href="/">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400|Roboto:300,400" type="text/css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-aria.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
+	<script src="app.js"></script>
+</head>
+<body ng-cloak ng-app="sandbox" layout="column">
+
+  <md-toolbar class="md-hue-2" layout="row">
+      <div class="md-toolbar-tools">
+        <h2 flex md-truncate>Zagadnienie transportowe</h2>
+      </div>
+    </md-toolbar>
+    
+    <!-- container -->
+    <div ng-controller="cost as vm" layout="row" flex>
+      
+      <md-content class="md-padding" layout="row">
+        <div layout="column">
+          <md-card>
+            <md-card-content>
+            
+              <table>
+                <thead>
+                  <th></th>
+                  <th ng-repeat="broker in vm.data.brokers">{{broker.name}}</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="supplier in vm.data.suppliers"  ng-init="supplierId=$index">
+                  <td>{{supplier.name}}</td>
+                  <td ng-repeat="broker in vm.data.brokers">
+                    <input type="text" ng-model="vm.supplierCosts[supplierId][$index].cost"/>
+                  </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+              </table>
+            </md-card-content>
+          </md-card>
+          
+          <md-card>
+            <md-card-content>
+            
+              <table>
+                <thead>
+                  <th></th>
+                  <th ng-repeat="customer in vm.data.customers">{{customer.name}}</th>
+                </thead>
+                <tbody>
+                <tr ng-repeat="brokers in vm.data.brokers" ng-init="brokerId=$index">
+                  <td>{{brokers.name}}</td>
+                  <td ng-repeat="customer in vm.data.customers">
+                    <input type="text" ng-model="vm.customerCosts[brokerId][$index].cost"/>
+                  </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                </tfoot>
+              </table>
+            {{vm.customerCosts  | json}}
+            </md-card-content>
+          </md-card>
+          <md-card>
+            <md-card-actions layout="row" layout-align="end center">
+              <md-button ng-click="vm.addSupplierRow($event)">Dodaj Dostawce</md-button>
+              <md-button ng-click="vm.removeSupplierRow($event)">Usuń Dostawce</md-button>
+              <md-button ng-click="vm.addCustomerRow($event)">Dodaj Odbiorcę</md-button>
+              <md-button ng-click="vm.removeCustomerRow($event)">Usuń Odbiorcę</md-button>
+              <md-button ng-click="vm.addBrokerRow($event)">Dodaj Pośrednika</md-button>
+              <md-button ng-click="vm.removeBrokerRow($event)">Usuń Pośrednika</md-button>
+            </md-card-actions>
+              
+          </md-card>
+        </div>
+      </md-content>
+      
+     
+      
+  </div>
+  <!-- / container -->
+  
+
+
+
+
+
+
+
+
 <script language="javascript">
     var n = 9; //ilosc wezlow
     var distTable = [];
