@@ -118,7 +118,7 @@
         //See http://support.microsoft.com/kb/198571 for more details on accessing add-ins
 
         // SolverOk (SetCell, MaxMinVal, ValueOf, ByChange, Engine, EngineDesc)
-        oExcel.Application.Run(oSolver.Name + "!SolverOk", "$A$1", 2, "0", "$A$18:$I$26", 1, "GRG Nonlinear");
+        oExcel.Application.Run(oSolver.Name + "!SolverOk", "$A$1", 2, "0", "$A$" + (n + 2 * odl + 1) + ":$" + letters[n-1] + "$" + (2 * n + 2 * odl), 1);
 
         /*
          SolverOptions( MaxTime, Iterations, Precision, AssumeLinear, StepThru, Estimates, Derivatives, SearchOption, IntTolerance, Scaling, Convergence, AssumeNonNeg, PopulationSize, RandomSeed, MultiStart, RequireBounds, MutationRate, MaxSubproblems, MaxIntegerSols, SolveWithout, MaxTimeNoImp)
@@ -126,11 +126,11 @@
         //oExcel.Application.Run(oSolver.Name + "!SolverOptions", );
 
         oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$3", 2, "1");        // $Y$3 = 1
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$18:$I$26", 3, "0"); // $O$3:$W$11 >= 0
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$" + (n + 2 * odl + 1) + ":$I$" + (2 * n + 2 * odl) , 3, "0"); // $O$3:$W$11 >= 0
         oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$B$4:$H$4", 2, "0");   // $P$17:$V$17 = 0
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$I$4", 2, "1");        // $W$13 = 1
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$" + letters[n-1] + "$4", 2, "1");        // $W$13 = 1
         oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$2", 2, "0");        // $O$13 = 0
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$I$3", 2, "0");        // $Y$11 = 0
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$" + letters[n-1] + "$3", 2, "0");        // $Y$11 = 0
 
 
 
