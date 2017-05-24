@@ -116,10 +116,28 @@
 
         //Populate the solver with the parameters to use (copying what the excel macro produced in lines 45-54)
         //See http://support.microsoft.com/kb/198571 for more details on accessing add-ins
-        oExcel.Application.Run(oSolver.Name + "!SolverOk", "A1", 2, "0", "A18:I26");
 
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$C$5:$C$6", 4, "integer");
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$E$8:$G$8", 3, "$E$10:$G$10");
+        //                                      SolverOk (SetCell, MaxMinVal, ValueOf, ByChange, Engine, EngineDesc)
+        oExcel.Application.Run(oSolver.Name + "!SolverOk", "$A$1", 2, "0", "$A$18:$I$26");
+
+
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$3", 2, "1");        // $Y$3 = 1
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$18:$I$26", 3, "0"); // $O$3:$W$11 >= 0
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$B$4:$H$4", 2, "0");   // $P$17:$V$17 = 0
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$I$4", 2, "1");        // $W$13 = 1
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$4", 2, "0");        // $O$13 = 0
+        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$I$3", 2, "0");        // $Y$11 = 0
+
+        //oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$C$5:$C$6", 4, "integer");
+        //oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$C$5:$C$6", 4, "integer");
+
+
+
+
+
+
+
+
         oExcel.Application.Run(oSolver.Name + "!SolverOptions", 100, 100, 0.000001, true, false, 1, 1, 1, 5, false, 0.0001, true);
 
         //Tell solver to solve the problem. Passed in a true to tell it to keep the numbers and not show the dialog box.
