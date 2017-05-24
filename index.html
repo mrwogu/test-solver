@@ -118,7 +118,8 @@
         //See http://support.microsoft.com/kb/198571 for more details on accessing add-ins
 
         // SolverOk (SetCell, MaxMinVal, ValueOf, ByChange, Engine, EngineDesc)
-        oExcel.Application.Run(oSolver.Name + "!SolverOk", "$A$1", 2, "0", "$A$" + (n + 2 * odl + 1) + ":$" + letters[n-1] + "$" + (2 * n + 2 * odl), 1);
+        oExcel.Application.Run(oSolver.Name + "!SolverOk", "$A$1", 2, "0", "$A$" + (n + 2 * odl + 1) + ":$" + letters[n-1] + "$" + (2 * n + 2 * odl), 1, "Simplex LP");
+
 
         /*
          SolverOptions( MaxTime, Iterations, Precision, AssumeLinear, StepThru, Estimates, Derivatives, SearchOption, IntTolerance, Scaling, Convergence, AssumeNonNeg, PopulationSize, RandomSeed, MultiStart, RequireBounds, MutationRate, MaxSubproblems, MaxIntegerSols, SolveWithout, MaxTimeNoImp)
