@@ -22,206 +22,84 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.1/angular-aria.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.1.4/angular-material.min.js"></script>
-	<script src="app.js"></script>
+    <script src="app.js"></script>
 </head>
 <body ng-cloak ng-app="sandbox" layout="column">
 
-  <md-toolbar class="md-hue-2" layout="row">
-      <div class="md-toolbar-tools">
-        <h2 flex md-truncate>Zagadnienie transportowe</h2>
-      </div>
-    </md-toolbar>
-    
-    <!-- container -->
-    <div ng-controller="cost as vm" layout="row" flex>
-      
-      <md-content class="md-padding" layout="row">
-        <div layout="column">
-          <md-card>
-            <md-card-content>
-            
-              <table>
-                <thead>
-                  <th></th>
-                  <th ng-repeat="broker in vm.data.brokers">{{broker.name}}</th>
-                </thead>
-                <tbody>
-                <tr ng-repeat="supplier in vm.data.suppliers"  ng-init="supplierId=$index">
-                  <td>{{supplier.name}}</td>
-                  <td ng-repeat="broker in vm.data.brokers">
-                    <input type="text" ng-model="vm.supplierCosts[supplierId][$index].cost"/>
-                  </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-              </table>
-            </md-card-content>
-          </md-card>
-          
-          <md-card>
-            <md-card-content>
-            
-              <table>
-                <thead>
-                  <th></th>
-                  <th ng-repeat="customer in vm.data.customers">{{customer.name}}</th>
-                </thead>
-                <tbody>
-                <tr ng-repeat="brokers in vm.data.brokers" ng-init="brokerId=$index">
-                  <td>{{brokers.name}}</td>
-                  <td ng-repeat="customer in vm.data.customers">
-                    <input type="text" ng-model="vm.customerCosts[brokerId][$index].cost"/>
-                  </td>
-                </tr>
-                </tbody>
-                <tfoot>
-                </tfoot>
-              </table>
-            {{vm.customerCosts  | json}}
-            </md-card-content>
-          </md-card>
-          <md-card>
-            <md-card-actions layout="row" layout-align="end center">
-              <md-button ng-click="vm.addSupplierRow($event)">Dodaj Dostawce</md-button>
-              <md-button ng-click="vm.removeSupplierRow($event)">Usuń Dostawce</md-button>
-              <md-button ng-click="vm.addCustomerRow($event)">Dodaj Odbiorcę</md-button>
-              <md-button ng-click="vm.removeCustomerRow($event)">Usuń Odbiorcę</md-button>
-              <md-button ng-click="vm.addBrokerRow($event)">Dodaj Pośrednika</md-button>
-              <md-button ng-click="vm.removeBrokerRow($event)">Usuń Pośrednika</md-button>
-            </md-card-actions>
-              
-          </md-card>
-        </div>
-      </md-content>
-      
-     
-      
-  </div>
-  <!-- / container -->
-  
+<md-toolbar class="md-hue-2" layout="row">
+    <div class="md-toolbar-tools">
+        <h2 flex md-truncate>Najkrótsza droga w sieci</h2>
+    </div>
+</md-toolbar>
 
-<script language="javascript">
-    var n = 9; //ilosc wezlow
-    var distTable = [];
-    var changeTable = [];
-    function prepareData() {
-        for (i = 0; i < n; i++) {
-            distTable[i] = [];
-            for (j = 0; j < n; j++) {
-                distTable[i][j] = Math.random() * 100;
-            }
-        }
-        for (k = 0; k < n; k++) {
-            changeTable[k] = [];
-            for (l = 0; l < n; l++) {
-                changeTable[k][l] = 0;
-            }
-        }
-    }
-    function doExcelTest() {
-        var letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"];
-        var oExcel = new ActiveXObject("Excel.Application");
-        oExcel.visible = true;  // Show excel
-        var oBook = oExcel.Workbooks.Add();
-        var oSheet = oBook.Activesheet;
-        var odl = 4; // od gory w excelu zostawiamy 3 wiersze na komorke celu itp;
-        for (i = 0; i < n; i++) {
-            for (j = 0; j < n; j++) {
-                oSheet.Range(letters[j] + "" + (i + odl + 1)).value = distTable[i][j];
-                oSheet.Range(letters[j] + "" + (i + n + 2 * odl + 1)).value = changeTable[i][j];
-            }
-        }
-        //funkcja celu =SUMA.ILOCZYN�W(A3:I11;A14:I22)
-        var fCelu = "=SUMPRODUCT(";
-        fCelu = fCelu + letters[0] + (odl + 1) + ":" + letters[n - 1] + (odl + n) + ",";//pierwsza tablica dystansow;
-        fCelu = fCelu + letters[0] + (n + 2 * odl + 1) + ":" + letters[n - 1] + (2 * n + 2 * odl) + ")";
-        oSheet.Range("A1").value = fCelu;
-        //sumy kolumn
-        for (i = 0; i < n; i++) {
-            var formula = "=SUM(";
-            formula = formula + letters[i] + (n + 2 * odl + 1) + ":";
-            formula = formula + letters[i] + (2 * n + 2 * odl) + ")";
-            oSheet.Range(letters[i] + "2").value = formula;
-        }
-        //sumy wierszy
-        for (i = 0; i < n; i++) {
-            var formula = "=SUM(";
-            formula = formula + letters[0] + (n + 2 * odl + 1 + i) + ":";
-            formula = formula + letters[n - 1] + (n + 2 * odl + 1 + i) + ")";
-            oSheet.Range(letters[i] + "3").value = formula;
-        }
-        //roznice pomiedzy tymi gownami
-        for (i = 0; i < n; i++) {
-            var formula = "=" + letters[i] + "2" + "-" + letters[i] + "3";
-            oSheet.Range(letters[i] + "4").value = formula;
-        }
-        /*
-         oSheet.Range("C2").value = "Total Weekend Employees";
-         oSheet.Range("C3").value = "=SUM(C5:C6)";
-         oSheet.Range("C4").value = "Number Starting";
-         oSheet.Range("D4").value = "Day Emp Starts";
-         oSheet.Range("E4").value = "Friday";
-         oSheet.Range("F4").value = "Saturday";
-         oSheet.Range("G4").value = "Sunday";
-         oSheet.Range("D5").value = "Friday";
-         oSheet.Range("E5").value = "1";
-         oSheet.Range("F5").value = "1";
-         oSheet.Range("G5").value = "0";
-         oSheet.Range("D5").value = "Saturday";
-         oSheet.Range("E5").value = "0";
-         oSheet.Range("F5").value = "1";
-         oSheet.Range("G5").value = "1";
-         oSheet.Range("D8").value = "Number Working";
-         oSheet.Range("E8").value = "=SUMPRODUCT($C$5:$C$6,E5:E6)";
-         oSheet.Range("F8").value = "=SUMPRODUCT($C$5:$C$6,F5:F6)";
-         oSheet.Range("G8").value = "=SUMPRODUCT($C$5:$C$6,G5:G6)";
-         oSheet.Range("D9").value = ">=";
-         oSheet.Range("D10").value = "Number Needed";
-         oSheet.Range("E10").value = "25";
-         oSheet.Range("F10").value = "35";
-         oSheet.Range("G10").value = "12";
-         */
-        // fikcyjna tablica
-        //Make sure we can access the solver addin
-        //Forgot the MS kb article that describes this
-        var oSolver = oExcel.Addins("Dodatek Solver");
-        oExcel.Workbooks.Open(oSolver.FullName);
-        oExcel.Workbooks(oSolver.Name).RunAutoMacros(1);
-        //Populate the solver with the parameters to use (copying what the excel macro produced in lines 45-54)
-        //See http://support.microsoft.com/kb/198571 for more details on accessing add-ins
-        // SolverOk (SetCell, MaxMinVal, ValueOf, ByChange, Engine, EngineDesc)
-        oExcel.Application.Run(oSolver.Name + "!SolverOk", "$A$1", 2, "0", "$A$" + (n + 2 * odl + 1) + ":$" + letters[n-1] + "$" + (2 * n + 2 * odl), 1, "Simplex LP");
-        /*
-         SolverOptions( MaxTime, Iterations, Precision, AssumeLinear, StepThru, Estimates, Derivatives, SearchOption, IntTolerance, Scaling, Convergence, AssumeNonNeg, PopulationSize, RandomSeed, MultiStart, RequireBounds, MutationRate, MaxSubproblems, MaxIntegerSols, SolveWithout, MaxTimeNoImp)
-        */
-        //oExcel.Application.Run(oSolver.Name + "!SolverOptions", );
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$3", 2, "1");        // $Y$3 = 1
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$" + (n + 2 * odl + 1) + ":$I$" + (2 * n + 2 * odl) , 3, "0"); // $O$3:$W$11 >= 0
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$B$4:$H$4", 2, "0");   // $P$17:$V$17 = 0
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$" + letters[n-1] + "$4", 2, "1");        // $W$13 = 1
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$A$2", 2, "0");        // $O$13 = 0
-        oExcel.Application.Run(oSolver.Name + "!SolverAdd", "$" + letters[n-1] + "$3", 2, "0");        // $Y$11 = 0
-        oExcel.Application.Run(oSolver.Name + "!SolverOptions", 100, 100, 0.000001, true, false, 1, 1, 1, 5, false, 0.0001, true);
-        //Tell solver to solve the problem. Passed in a true to tell it to keep the numbers and not show the dialog box.
-        oExcel.Application.Run(oSolver.Name + "!SolverSolve", true);
-        console.log(oSheet.Range("G10").value);
-        //oBook.Saved = true;
-        //oExcel.Application.Quit();
-        /*
-         ' equivalent excel macro I want to be able to do from javascript
-         ''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-         SolverOk SetCell:="$C$3", MaxMinVal:=2, ValueOf:="0", ByChange:="$C$5:$C$6"
-         SolverAdd CellRef:="$C$5:$C$6", Relation:=4, FormulaText:="integer"
-         SolverAdd CellRef:="$E$8:$G$8", Relation:=3, FormulaText:="$E$10:$G$10"
-         SolverOk SetCell:="$C$3", MaxMinVal:=2, ValueOf:="0", ByChange:="$C$5:$C$6"
-         SolverOptions MaxTime:=100, Iterations:=100, Precision:=0.000001, AssumeLinear:=True, StepThru:=False, Estimates:=1, Derivatives:=1, SearchOption:=1, IntTolerance:=5, Scaling:=False, Convergence:=0.0001, AssumeNonNeg:=True
-         SolverOk SetCell:="$C$3", MaxMinVal:=2, ValueOf:="0", ByChange:="$C$5:$C$6"
-         SolverSolve
-         */
-    }
-    prepareData();
-    doExcelTest();
-</script>
+<!-- container -->
+<div ng-controller="cost as vm" layout="row" flex>
+
+    <md-content class="md-padding" layout="row">
+        <div layout="column">
+            <md-card>
+                <md-card-content>
+
+                    <table>
+                        <thead>
+                        <th></th>
+                        <th ng-repeat="node in vm.nodes">{{$index+1}}</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="node in vm.nodes" ng-init="i = $index">
+                            <td>{{$index+1}}</td>
+                            <td ng-repeat="node in vm.nodes" ng-init="j = $index; (i == j) ? vm.nodes[i][j] = 0 : vm.nodes[i][j] = 10000;">
+                                <input type="number" style="width: 65px; text-align:center;" ng-model="vm.nodes[i][j]"/>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </md-card-content>
+            </md-card>
+
+            <md-card>
+                <md-card-actions layout="row" layout-align="end center">
+                    <md-button ng-click="vm.addNode($event)">Dodaj węzeł</md-button>
+                    <md-button ng-click="vm.removeNode($event)">Usuń węzeł</md-button>
+                    <md-button ng-click="vm.solve($event)">Oblicz najmniejszy koszt</md-button>
+                </md-card-actions>
+            </md-card>
+
+            <md-card ng-if="vm.results">
+                <md-card-content>
+                    Najkrótsza droga: {{vm.results.cost}}
+                </md-card-content>
+            </md-card>
+
+            <md-card ng-if="vm.results">
+                <md-card-content>
+
+                    <table>
+                        <thead>
+                        <th></th>
+                        <th ng-repeat="route in vm.results.routes">{{$index+1}}</th>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="route in vm.results.routes" ng-init="i = $index">
+                            <td>{{$index+1}}</td>
+                            <td ng-repeat="route in vm.results.routes" ng-init="j = $index;">
+                                <input type="number" style="width: 65px; text-align:center;" ng-value="vm.results.routes[i][j] * vm.nodes[i][j]" disabled/>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </md-card-content>
+            </md-card>
+
+        </div>
+    </md-content>
+
+
+</div>
+<!-- / container -->
 </body>
 </html>
